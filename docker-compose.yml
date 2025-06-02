@@ -1,0 +1,36 @@
+
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-api
+    ports:
+    - "8352:8352"
+    depends_on:
+    - db
+    env_file:
+    - .env
+  db:
+    image: postgres:15
+    container_name: pg-db
+    environment:
+      POSTGRES_DB: apishka
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: C529@4H0OdEO%}Y
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: walterwhite@example.com
+      PGADMIN_DEFAULT_PASSWORD: crystalmeth
+    ports:
+    - "8353:80"
+    depends_on:
+    - db
